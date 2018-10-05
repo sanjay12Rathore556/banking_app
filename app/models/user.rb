@@ -7,7 +7,7 @@ class User < ApplicationRecord
   validate :age_vaild
   private
   def age_vaild
-  	if self.age <= 0
+    if self.age <= 0
       errors.add(:age,"age should be greater than 0")
     end  
   end
