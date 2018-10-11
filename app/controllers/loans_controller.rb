@@ -1,96 +1,46 @@
 class LoansController < ApplicationController
-    skip_before_action :verify_authenticity_token
-  
-    def new
-        @loan = Loan.new
-        respond_to do |format|
-            format.json { render json: {loan: @loan}, status: :ok }
-        end
-    end
+  def new
+    @loan = Loan.new
+  end
     
-    def show
-        begin
-            @loan = Loan.find(params[:id])
-            respond_to do |format|
-                format.json { render json: {loan:@loan}, status: :ok }
-            end
-        rescue ActiveRecord::RecordNotFound => e
-            respond_to do |format|
-                format.json { render json: {error:e.message}, status: :not_found}
-            end
-        end
-    end
+  def show
+    @loan = Loan.find(params[:id])          
+  end
     
-    def create
-    	begin
-    		@loan = Loan.new(loan_params)
-            respond_to do |format|
-                if @loan.save
-                    format.json { render json: { loan: @loan}, status: :created }
-                else
-                    format.json { render json: @loan.errors, status: :unprocessable_entity }
-                end
-            end 
-    	rescue ActiveRecord::InvalidForeignKey => e
-            respond_to do |format|
-                format.json { render json: {error:'Invalid Foreign Key'}, status: :unprocessable_entity }
-            end
-        end     
-    end
+  def create
+    @loan = Loan.new(loan_params)
+    if @loan.save
+      redirect_to @loan
+    else
+      render 'new'
+    end          
+  end
     
-    def destroy
-        begin
-            @loan = Loan.find(params[:id])
-            respond_to do |format|
-                @loan.destroy
-                format.json { render json: {}, status: :ok }
-            end  
-        rescue ActiveRecord::RecordNotFound => e
-            respond_to do |format|
-                format.json { render json: {error:e.message}, status: :unprocessable_entity }
-            end
-        end
-    end
+  def destroy
+    @loan = Loan.find(params[:id])
+    @loan.destroy
+    redirect_to loans_path        
+  end
     
-    def index
-        @loans = Loan.all
-        respond_to do |format|
-            format.json { render json: {loans:@loans}, status: :ok }
-        end
-    end
+  def index
+    @loans = Loan.all
+  end
     
-    def edit
-        begin
-            @loan = loan.find(params[:id])
-            respond_to do |format|
-                format.json { render json: {loan:@loan}, status: :ok }
-            end
-        rescue ActiveRecord::RecordNotFound => e
-            respond_to do |format|
-                format.json { render json: {error:e.message}, status: :not_found }
-            end
-        end
-    end
+  def edit
+    @loan = Loan.find(params[:id])        
+  end
     
-    def update
-        begin
-            @loan = Loan.find(params[:id])
-            respond_to do |format|
-                if @loan.update(loan_params)
-                    format.json { render json: {loan:@loan}, status: :ok }
-                else
-                    format.json { render json: @loan.errors, status: :unprocessable_entity }
-                end
-            end
-        rescue => e
-            respond_to do |format|
-                format.json { render json: {error:e.message}, status: :unprocessable_entity }
-            end
-        end
+  def update
+    @loan = Loan.find(params[:id])
+    if @loan.update(loan_params)
+      redirect_to @loan
+    else 
+      render 'edit'          
     end
+  end  
     
-    private
-    def loan_params
-        params.require(:loan).permit(:loan_type, :amount, :interest,:time_period,:branch_id,:user_id)
-    end	
+  private
+  def loan_params
+    params.require(:loan).permit(:loan_type, :amount, :interest,:time_period,:branch_id,:user_id)
+  end	
 end

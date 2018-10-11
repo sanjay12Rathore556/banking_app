@@ -1,96 +1,46 @@
 class AccountsController < ApplicationController
-    skip_before_action :verify_authenticity_token
-  
-    def new
-        @account = Account.new
-        respond_to do |format|
-            format.json { render json: {account: @account}, status: :ok }
-        end
-    end
+  def new
+    @account = Account.new
+  end
     
-    def show
-        begin
-            @account = Account.find(params[:id])
-            respond_to do |format|
-                format.json { render json: {account:@account}, status: :ok }
-            end
-        rescue ActiveRecord::RecordNotFound => e
-            respond_to do |format|
-                format.json { render json: {error:e.message}, status: :not_found}
-            end
-        end
-    end
+  def show
+    @account = Account.find(params[:id])          
+  end
     
-    def create
-    	begin
-            @account = Account.new(account_params)
-            respond_to do |format|
-                if @account.save
-                    format.json { render json: { account: @account}, status: :created }
-                else
-                    format.json { render json: @account.errors, status: :unprocessable_entity }
-                end
-            end
-        rescue ActiveRecord::InvalidForeignKey => e
-            respond_to do |format|
-                format.json { render json: {error:'Invalid Foreign Key'}, status: :unprocessable_entity }
-            end
-        end    
-    end
+  def create
+    @account = Account.new(account_params)
+    if @account.save
+      redirect_to @account
+    else
+      render 'new'
+    end          
+  end
     
-    def destroy
-        begin
-            @account = Account.find(params[:id])
-            respond_to do |format|
-                @account.destroy
-                format.json { render json: {}, status: :ok }
-            end
-        rescue ActiveRecord::RecordNotFound => e
-            respond_to do |format|
-                format.json { render json: {error:e.message}, status: :unprocessable_entity }
-            end
-        end
-    end
+  def destroy
+    @account = Account.find(params[:id])
+    @account.destroy
+    redirect_to accounts_path        
+  end
     
-    def index
-        @accounts = Account.all
-        respond_to do |format|
-            format.json { render json: {accounts:@accounts}, status: :ok }
-        end
-    end
+  def index
+    @accounts = Account.all
+  end
     
-    def edit
-        begin
-            @account = Account.find(params[:id])
-            respond_to do |format|
-                format.json { render json: {account:@account}, status: :ok }
-            end
-        rescue ActiveRecord::RecordNotFound => e
-            respond_to do |format|
-                format.json { render json: {error:e.message}, status: :not_found }
-            end
-        end
-    end
+  def edit
+    @account = Account.find(params[:id])        
+  end
     
-    def update
-        begin
-            @account = Account.find(params[:id])
-            respond_to do |format|
-                if @account.update(account_params)
-                    format.json { render json: {account:@account}, status: :ok }
-                else
-                    format.json { render json: @account.errors, status: :unprocessable_entity }
-                end
-            end
-        rescue => e
-            respond_to do |format|
-                format.json { render json: {error:e.message}, status: :unprocessable_entity }
-            end
-        end
+  def update
+    @account = Account.find(params[:id])
+    if @account.update(account_params)
+      redirect_to @account
+    else 
+      render 'edit'          
     end
+  end  
     
-    private
-    def account_params
-        params.require(:account).permit(:account_no, :balance, :account_type,:user_id)
-    end	
+  private
+  def account_params
+    params.require(:account).permit(:account_no, :balance, :account_type,:user_id)
+  end	
 end
