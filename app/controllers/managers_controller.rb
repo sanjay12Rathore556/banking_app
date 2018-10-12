@@ -1,43 +1,69 @@
 class ManagersController < ApplicationController
-	def new
+	skip_before_action :verify_authenticity_token
+  
+  def new
     @manager = Manager.new
+    render json: {manager: @manager}, status: :ok 
   end
-    
-  def show
-    @manager = Manager.find(params[:id])          
-  end
-    
+
   def create
-    @manager = Manager.new(manager_params)
-    if @manager.save
-      redirect_to @manager
-    else
-      render 'new'
-    end          
+  	begin
+  	  @manager = Manager.new(manager_params)
+      if @manager.save
+        render json: {manager: @manager}, status: :ok
+      else
+        render json: {errors: @manager.errors}, status: :unprocessable_entity
+      end
+  	rescue ActiveRecord::InvalidForeignKey => e
+  	  render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity
+  	end   
   end
-    
+
+  def show
+    begin
+      @manager = Manager.find(params[:id])
+      render json: {manager: @manager}, status: :ok
+    rescue ActiveRecord::RecordNotFound => e 
+      render json: {errors: e.message}, status: :not_found
+    end
+  end
+  
   def destroy
-    @manager = Manager.find(params[:id])
-    @manager.destroy
-    redirect_to managers_path        
+    begin
+      @manager = Manager.find(params[:id])
+        @manager.destroy
+        render json: {}, status: :ok 
+    rescue ActiveRecord::RecordNotFound => e
+      render json: {error:e.message}, status: :unprocessable_entity 
+    end
   end
-    
+
   def index
     @managers = Manager.all
+    render json: {managers:@managers}, status: :ok 
   end
-    
+
   def edit
-    @manager = Manager.find(params[:id])        
-  end
-    
-  def update
-    @manager = Manager.find(params[:id])
-    if @manager.update(manager_params)
-      redirect_to @manager
-    else 
-      render 'edit'          
+    begin
+      @manager = Manager.find(params[:id])
+      render json: {manager:@manager}, status: :ok 
+    rescue ActiveRecord::RecordNotFound => e
+      render json: {error:e.message}, status: :not_found
     end
-  end  
+  end
+
+  def update
+    begin
+      @manager = Manager.find(params[:id])
+      if @manager.update(manager_params)
+        render json: {manager: @manager}, status: :ok 
+      else
+        render json: @manager.errors, status: :unprocessable_entity 
+      end
+    rescue => e
+      render json: {error:e.message}, status: :unprocessable_entity 
+    end
+  end
     
   private
   def manager_params
