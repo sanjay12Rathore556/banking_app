@@ -8,14 +8,14 @@ class AccountsController < ApplicationController
 
   def create
   	begin
-  	  @account = Account.new(account_params)
+  		@account = Account.new(account_params)
       if @account.save
         render json: {account: @account}, status: :ok
       else
         render json: {errors: @account.errors}, status: :unprocessable_entity
-      end
+      end	
   	rescue ActiveRecord::InvalidForeignKey => e
-  	  render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity
+  		render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity	  
   	end   
   end
 
