@@ -31,8 +31,8 @@ class AtmsController < ApplicationController
   def destroy
     begin
       @atm = Atm.find(params[:id])
-        @atm.destroy
-        render json: {}, status: :ok 
+      @atm.destroy
+      render json: {}, status: :ok 
     rescue ActiveRecord::RecordNotFound => e
       render json: {error:e.message}, status: :unprocessable_entity 
     end

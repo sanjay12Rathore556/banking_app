@@ -31,8 +31,8 @@ class ManagersController < ApplicationController
   def destroy
     begin
       @manager = Manager.find(params[:id])
-        @manager.destroy
-        render json: {}, status: :ok 
+      @manager.destroy
+      render json: {}, status: :ok 
     rescue ActiveRecord::RecordNotFound => e
       render json: {error:e.message}, status: :unprocessable_entity 
     end

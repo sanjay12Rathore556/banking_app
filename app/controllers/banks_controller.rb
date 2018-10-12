@@ -7,16 +7,16 @@ class BanksController < ApplicationController
   end
 
   def create
-  	begin
-  	  @bank = Bank.new(bank_params)
+    begin
+      @bank = Bank.new(bank_params)
       if @bank.save
         render json: {bank: @bank}, status: :ok
       else
         render json: {errors: @bank.errors}, status: :unprocessable_entity
       end
-  	rescue ActiveRecord::InvalidForeignKey => e
-  	  render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity
-  	end   
+    rescue ActiveRecord::InvalidForeignKey => e
+      render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity
+    end   
   end
 
   def show
@@ -31,8 +31,8 @@ class BanksController < ApplicationController
   def destroy
     begin
       @bank = Bank.find(params[:id])
-        @bank.destroy
-        render json: {}, status: :ok 
+      @bank.destroy
+      render json: {}, status: :ok 
     rescue ActiveRecord::RecordNotFound => e
       render json: {error:e.message}, status: :unprocessable_entity 
     end
@@ -64,9 +64,9 @@ class BanksController < ApplicationController
       render json: {error:e.message}, status: :unprocessable_entity 
     end
   end
-  
+
   private
   def bank_params
-   	params.require(:bank).permit(:name,:contact_no)
-  end 	
+    params.require(:bank).permit(:name,:contact_no)
+  end   
 end

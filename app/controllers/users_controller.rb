@@ -31,8 +31,8 @@ class UsersController < ApplicationController
   def destroy
     begin
       @user = User.find(params[:id])
-        @user.destroy
-        render json: {}, status: :ok 
+      @user.destroy
+      render json: {}, status: :ok 
     rescue ActiveRecord::RecordNotFound => e
       render json: {error:e.message}, status: :unprocessable_entity 
     end

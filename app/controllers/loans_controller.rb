@@ -31,8 +31,8 @@ class LoansController < ApplicationController
   def destroy
     begin
       @loan = Loan.find(params[:id])
-        @loan.destroy
-        render json: {}, status: :ok 
+      @loan.destroy
+      render json: {}, status: :ok 
     rescue ActiveRecord::RecordNotFound => e
       render json: {error:e.message}, status: :unprocessable_entity 
     end

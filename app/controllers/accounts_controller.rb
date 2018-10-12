@@ -31,8 +31,8 @@ class AccountsController < ApplicationController
   def destroy
     begin
       @account = Account.find(params[:id])
-        @account.destroy
-        render json: {}, status: :ok 
+      @account.destroy
+      render json: {}, status: :ok 
     rescue ActiveRecord::RecordNotFound => e
       render json: {error:e.message}, status: :unprocessable_entity 
     end

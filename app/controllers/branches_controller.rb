@@ -31,8 +31,8 @@ class BranchesController < ApplicationController
   def destroy
     begin
       @branch = Branch.find(params[:id])
-        @branch.destroy
-        render json: {}, status: :ok 
+      @branch.destroy
+      render json: {}, status: :ok 
     rescue ActiveRecord::RecordNotFound => e
       render json: {error:e.message}, status: :unprocessable_entity 
     end
