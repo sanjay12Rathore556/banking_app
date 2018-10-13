@@ -1,6 +1,6 @@
 class ManagersController < ApplicationController
-	skip_before_action :verify_authenticity_token
-  
+  skip_before_action :verify_authenticity_token
+    
   def new
     @manager = Manager.new
     render json: {manager: @manager}, status: :ok 
