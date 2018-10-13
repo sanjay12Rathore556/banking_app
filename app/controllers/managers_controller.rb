@@ -7,16 +7,16 @@ class ManagersController < ApplicationController
   end
 
   def create
-  	begin
-  	  @manager = Manager.new(manager_params)
+    begin
+      @manager = Manager.new(manager_params)
       if @manager.save
         render json: {manager: @manager}, status: :ok
       else
         render json: {errors: @manager.errors}, status: :unprocessable_entity
       end
-  	rescue ActiveRecord::InvalidForeignKey => e
-  	  render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity
-  	end   
+    rescue ActiveRecord::InvalidForeignKey => e
+      render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity
+    end   
   end
 
   def show

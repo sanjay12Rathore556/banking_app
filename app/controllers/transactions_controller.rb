@@ -7,16 +7,16 @@ class TransactionsController < ApplicationController
   end
 
   def create
-  	begin
-  	  @transaction = Transaction.new(transaction_params)
+    begin
+      @transaction = Transaction.new(transaction_params)
       if @transaction.save
         render json: {transaction: @transaction}, status: :ok
       else
         render json: {errors: @transaction.errors}, status: :unprocessable_entity
       end
-  	rescue ActiveRecord::InvalidForeignKey => e
-  	  render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity
-  	end   
+    rescue ActiveRecord::InvalidForeignKey => e
+      render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity
+    end   
   end
 
   def show

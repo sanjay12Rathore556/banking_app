@@ -7,17 +7,17 @@ class BranchesController < ApplicationController
   end
 
   def create
-  	begin
-  	  @branch = Branch.new(branch_params)
+    begin
+      @branch = Branch.new(branch_params)
       if @branch.save
         render json: {branch: @branch}, status: :ok
       else
         render json: {errors: @branch.errors}, status: :unprocessable_entity
       end
-  	rescue ActiveRecord::InvalidForeignKey => e
-  	  render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity
-  	end   
-  end
+    rescue ActiveRecord::InvalidForeignKey => e
+      render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity
+    end   
+  end 
 
   def show
     begin

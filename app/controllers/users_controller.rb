@@ -7,16 +7,16 @@ class UsersController < ApplicationController
   end
 
   def create
-  	begin
-  	  @user = User.new(user_params)
+    begin
+      @user = User.new(user_params)
       if @user.save
         render json: {user: @user}, status: :ok
       else
         render json: {errors: @user.errors}, status: :unprocessable_entity
       end
-  	rescue ActiveRecord::InvalidForeignKey => e
-  	  render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity
-  	end   
+    rescue ActiveRecord::InvalidForeignKey => e
+      render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity
+    end   
   end
 
   def show

@@ -7,17 +7,17 @@ class AtmsController < ApplicationController
   end
 
   def create
-  	begin
-  	  @atm = Atm.new(atm_params)
+    begin
+      @atm = Atm.new(atm_params)
       if @atm.save
         render json: {atm: @atm}, status: :ok
       else
         render json: {errors: @atm.errors}, status: :unprocessable_entity
       end
-  	rescue ActiveRecord::InvalidForeignKey => e
-  	  render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity
-  	end   
-  end
+    rescue ActiveRecord::InvalidForeignKey => e
+      render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity
+    end
+  end    
 
   def show
     begin

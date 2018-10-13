@@ -17,7 +17,7 @@ class BanksController < ApplicationController
     rescue ActiveRecord::InvalidForeignKey => e
       render json: {error: 'Invalid Foreign Key'}, status: :unprocessable_entity
     end   
-  end
+  end        
 
   def show
     begin
