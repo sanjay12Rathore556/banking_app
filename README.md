@@ -23,4 +23,4 @@ Things you may want to cover:
 
 * ...
 <h2> model specs done </h2>
-<img src="assets/images/Screenshot from 2018-10-17 06-06-16.png" >
+<img src="app/assets/images/Screenshot from 2018-10-17 06-06-16.png" >
