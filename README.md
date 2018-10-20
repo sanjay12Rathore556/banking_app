@@ -24,3 +24,5 @@ Things you may want to cover:
 * ...
 <h2> model specs done </h2>
 <img src="app/assets/images/Screenshot from 2018-10-17 06-06-16.png" >
+<h2 style="margin-top: 20px;"> controller specs done</h2>
+<img src="app/assets/images/Screenshot from 2018-10-20 01-15-26.png" >
