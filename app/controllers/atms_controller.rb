@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Description/Explanation of Person class
 class AtmsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
@@ -11,12 +12,10 @@ class AtmsController < ApplicationController
   def create
     @atm = Atm.new(atm_params)
     if @atm.save
-      render json: { atm: @atm }, status: :ok
+      render json: { atm: @atm }, status: :created
     else
       render json: { errors: @atm.errors }, status: :unprocessable_entity
     end
-  rescue ActiveRecord::InvalidForeignKey => e
-    render json: { error: 'Invalid Foreign Key' }, status: :unprocessable_entity
   end
 
   def show
@@ -60,6 +59,6 @@ class AtmsController < ApplicationController
   private
 
   def atm_params
-    params.require(:atm).permit(:name, :address, :atm_id)
+    params.require(:atm).permit(:name, :address, :atm_id, :bank_id)
   end
 end

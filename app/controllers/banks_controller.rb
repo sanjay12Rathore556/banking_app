@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Description/Explanation of Person class
 class BanksController < ApplicationController
   skip_before_action :verify_authenticity_token
 
@@ -11,12 +12,10 @@ class BanksController < ApplicationController
   def create
     @bank = Bank.new(bank_params)
     if @bank.save
-      render json: { bank: @bank }, status: :ok
+      render json: { bank: @bank }, status: :created
     else
       render json: { errors: @bank.errors }, status: :unprocessable_entity
     end
-  rescue ActiveRecord::InvalidForeignKey => e
-    render json: { error: 'Invalid Foreign Key' }, status: :unprocessable_entity
   end
 
   def show

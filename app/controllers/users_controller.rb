@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Description/Explanation of Person class
 class UsersController < ApplicationController
   skip_before_action :verify_authenticity_token
 
@@ -11,12 +12,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      render json: { user: @user }, status: :ok
+      render json: { user: @user }, status: :created
     else
       render json: { errors: @user.errors }, status: :unprocessable_entity
     end
-  rescue ActiveRecord::InvalidForeignKey => e
-    render json: { error: 'Invalid Foreign Key' }, status: :unprocessable_entity
   end
 
   def show
@@ -60,6 +59,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :father_name, :mother_name, :age, :address, :contact_no, :branch_id)
+    params.require(:user).permit(:name, :father_name, :mother_name,
+                                 :age, :address, :contact_no, :branch_id)
   end
 end

@@ -20,10 +20,14 @@ RSpec.describe Manager, type: :model do
       expect(FactoryBot.build(:manager, contact_no: 'jhgjf12')).to be_invalid
     end
     it 'is invalid to exceed 10 digit  contact_no' do
-      expect(FactoryBot.build(:manager, contact_no: '98984545678912')).to be_invalid
+      expect(
+        FactoryBot.build(:manager, contact_no: '98984545678912')
+      ).to be_invalid
     end
     it 'is invalid to has less then 10 digit  contact_no' do
-      expect(FactoryBot.build(:manager, contact_no: '98912')).to be_invalid
+      expect(
+        FactoryBot.build(:manager, contact_no: '98912')
+      ).to be_invalid
     end
   end
 end

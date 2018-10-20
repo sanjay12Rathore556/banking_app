@@ -20,21 +20,36 @@ RSpec.describe Account, type: :model do
     end
     it 'has valid account type' do
       @userid = FactoryBot.create(:user)
-      expect(FactoryBot.build(:account, account_type: 'saving', user_id: @userid.id)).to be_valid
+      expect(FactoryBot.build(
+               :account, account_type: 'saving', user_id: @userid.id
+             )).to be_valid
     end
     it 'has valid account type' do
       @userid = FactoryBot.create(:user)
 
-      expect(FactoryBot.build(:account, account_type: 'current', user_id: @userid.id)).to be_valid
+      expect(
+        FactoryBot.build(:account, account_type: 'current', user_id: @userid.id)
+      ).to be_valid
     end
     it 'is invalid without a valid account_type' do
       expect(FactoryBot.build(:account, account_type: 'hfkghf')).not_to be_valid
     end
     it 'is invalid without valid account_no' do
-      expect(FactoryBot.build(:account, account_no: 'hfjhg5t4434')).not_to be_valid
+      expect(
+        FactoryBot.build(:account, account_no: 'hfjhg5t4434')
+      ).not_to be_valid
+    end
+    it 'is invalid without balance' do
+      expect(FactoryBot.build(:account, balance: nil)).not_to be_valid
     end
     it 'is invalid without valid balance' do
       expect(FactoryBot.build(:account, balance: '500')).not_to be_valid
+    end
+    it 'is invalid without valid balance' do
+      expect(FactoryBot.build(:account, balance: '0')).not_to be_valid
+    end
+    it 'is invalid without valid balance' do
+      expect(FactoryBot.build(:account, balance: '-50')).not_to be_valid
     end
   end
   context 'account associations' do
@@ -49,7 +64,7 @@ RSpec.describe Account, type: :model do
     it 'has not unincluded transactions' do
       @userid = FactoryBot.create(:user)
       @a1 = FactoryBot.create(:account, user_id: @userid.id)
-      @a2 = FactoryBot.create(:account, account_no: '12345', user_id: @userid.id)
+      @a2 = FactoryBot.create(:account, user_id: @userid.id)
       @t1 = FactoryBot.create(:transaction, account_id: @a1.id)
       @t2 = FactoryBot.create(:transaction, account_id: @a2.id)
       expect(@a1.transactions).to include(@t1)

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Description/Explanation of Person class
 class AccountsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
@@ -9,14 +10,12 @@ class AccountsController < ApplicationController
   end
 
   def create
-    @accont = Account.new(account_params)
+    @account = Account.create(account_params)
     if @account.save
-      render json: { account: @account }, status: :ok
+      render json: { account: @account }, status: :created
     else
       render json: { errors: @account.errors }, status: :unprocessable_entity
     end
-  rescue ActiveRecord::InvalidForeignKey => e
-    render json: { error: 'Invalid Foreign Key' }, status: :unprocessable_entity
   end
 
   def show
@@ -60,6 +59,8 @@ class AccountsController < ApplicationController
   private
 
   def account_params
-    params.require(:account).permit(:account_no, :balance, :account_type, :user_id)
+    params.require(:account).permit(
+      :account_no, :balance, :account_type, :user_id
+    )
   end
 end

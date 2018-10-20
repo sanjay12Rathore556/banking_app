@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Description/Explanation of Person classs
 class TransactionsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
@@ -11,12 +12,11 @@ class TransactionsController < ApplicationController
   def create
     @transaction = Transaction.new(transaction_params)
     if @transaction.save
-      render json: { transaction: @transaction }, status: :ok
+      render json: { transaction: @transaction }, status: :created
     else
-      render json: { errors: @transaction.errors }, status: :unprocessable_entity
+      render json: { errors: @transaction.errors },
+             status: :unprocessable_entity
     end
-  rescue ActiveRecord::InvalidForeignKey => e
-    render json: { error: 'Invalid Foreign Key' }, status: :unprocessable_entity
   end
 
   def show
@@ -60,6 +60,7 @@ class TransactionsController < ApplicationController
   private
 
   def transaction_params
-    params.require(:transaction).permit(:amount, :transaction_type, :transaction_id, :account_id)
+    params.require(:transaction).permit(:amount, :transaction_type,
+                                        :atm_id, :account_id)
   end
 end

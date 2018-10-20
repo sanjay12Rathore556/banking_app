@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Description/Explanation of Person class
 class LoansController < ApplicationController
   skip_before_action :verify_authenticity_token
 
@@ -11,12 +12,10 @@ class LoansController < ApplicationController
   def create
     @loan = Loan.new(loan_params)
     if @loan.save
-      render json: { loan: @loan }, status: :ok
+      render json: { loan: @loan }, status: :created
     else
       render json: { errors: @loan.errors }, status: :unprocessable_entity
     end
-  rescue ActiveRecord::InvalidForeignKey => e
-    render json: { error: 'Invalid Foreign Key' }, status: :unprocessable_entity
   end
 
   def show
@@ -60,6 +59,7 @@ class LoansController < ApplicationController
   private
 
   def loan_params
-    params.require(:loan).permit(:loan_type, :amount, :interest, :time_period, :branch_id, :user_id)
+    params.require(:loan).permit(:loan_type, :amount, :interest,
+                                 :time_period, :branch_id, :user_id)
   end
 end

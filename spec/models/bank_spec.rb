@@ -14,8 +14,11 @@ RSpec.describe Bank, type: :model do
       expect(FactoryBot.build(:bank, contact_no: nil)).to be_invalid
     end
     it 'is invalid with grater than 10 digit contact_no' do
-      expect(FactoryBot.build(:bank, contact_no: '985348483949394')).to be_invalid
+      expect(
+        FactoryBot.build(:bank, contact_no: '985348483949394')
+      ).to be_invalid
     end
+
     it 'is invalid with less than 10 digit contact_no' do
       expect(FactoryBot.build(:bank, contact_no: '9853')).to be_invalid
     end

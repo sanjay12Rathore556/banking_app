@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Description/Explanation of Person class
 class BranchesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
@@ -11,12 +12,10 @@ class BranchesController < ApplicationController
   def create
     @branch = Branch.new(branch_params)
     if @branch.save
-      render json: { branch: @branch }, status: :ok
+      render json: { branch: @branch }, status: :created
     else
       render json: { errors: @branch.errors }, status: :unprocessable_entity
     end
-  rescue ActiveRecord::InvalidForeignKey => e
-    render json: { error: 'Invalid Foreign Key' }, status: :unprocessable_entity
   end
 
   def show
@@ -35,7 +34,7 @@ class BranchesController < ApplicationController
   end
 
   def index
-    @branchs = Branch.all
+    @branches = Branch.all
     render json: { branchs: @branchs }, status: :ok
   end
 
@@ -60,6 +59,8 @@ class BranchesController < ApplicationController
   private
 
   def branch_params
-    params.require(:branch).permit(:name, :address, :contact_no, :IFSC_code, :branch_id)
+    params.require(:branch).permit(
+      :name, :address, :contact_no, :IFSC_code, :branch_id, :bank_id
+    )
   end
 end
