@@ -2,12 +2,16 @@
 
 require 'rails_helper'
 
-RSpec.describe ManagersController,
-               type: :controller do
+RSpec.describe ManagersController, type: :controller do
+  before :each do
+    @bank = FactoryBot.create(:bank)
+    @branch = FactoryBot.create(:branch, bank_id: @bank.id)
+    @manager = FactoryBot.create(:manager, branch_id: @branch.id)
+  end
   context 'GET#index' do
     it 'has show all managers successfully' do
-      manager1 = FactoryBot.create(:manager)
-      manager2 = FactoryBot.create(:manager)
+      manager1 = FactoryBot.create(:manager, branch_id: @branch.id)
+      manager2 = FactoryBot.create(:manager, branch_id: @branch.id)
       get :index
       expect(assigns(:managers)).to include manager1
       expect(assigns(:managers)).to include manager2
@@ -16,9 +20,8 @@ RSpec.describe ManagersController,
   end
   context 'GET#show' do
     it 'has get manager successfully' do
-      manager = FactoryBot.create(:manager)
-      get :show, params: { id: manager.id }
-      expect(assigns(:manager)).to eq(manager)
+      get :show, params: { id: @manager.id }
+      expect(assigns(:manager)).to eq(@manager)
       expect(response).to have_http_status(:ok)
     end
 
@@ -38,9 +41,8 @@ RSpec.describe ManagersController,
   end
   context 'GET#edit' do
     it 'has get correct manager successfully' do
-      manager = FactoryBot.create(:manager)
-      get :edit, params: { id: manager.id }
-      expect(assigns(:manager)).to eq(manager)
+      get :edit, params: { id: @manager.id }
+      expect(assigns(:manager)).to eq(@manager)
       expect(response).to have_http_status(:ok)
     end
 
@@ -52,7 +54,7 @@ RSpec.describe ManagersController,
 
   context 'POST#create' do
     it 'has create manager successfully' do
-      manager = FactoryBot.build(:manager)
+      manager = FactoryBot.build(:manager, branch_id: @branch.id)
       manager_params = {
         manager: {
           name: manager.name,
@@ -82,8 +84,8 @@ RSpec.describe ManagersController,
 
   context 'PUT#update' do
     it 'has update manager successfully' do
-      manager1 = FactoryBot.create(:manager)
-      manager2 = FactoryBot.build(:manager)
+      manager1 = FactoryBot.create(:manager, branch_id: @branch.id)
+      manager2 = FactoryBot.build(:manager, branch_id: @branch.id)
       put :update,
           params: {
             id: manager1.id,
@@ -102,7 +104,7 @@ RSpec.describe ManagersController,
     end
 
     it 'has not update manager with invalid inputs' do
-      manager1 = FactoryBot.create(:manager)
+      manager1 = FactoryBot.create(:manager, branch_id: @branch.id)
       put :update, params: {
         id: manager1.id, manager: {
           name: nil, contact_no: nil
@@ -112,11 +114,10 @@ RSpec.describe ManagersController,
     end
 
     it 'has not update manager with invalid manager' do
-      manager = FactoryBot.create(:manager)
       put :update, params: {
         id: '123456', manager: {
-          name: manager.name,
-          contact_no: manager.contact_no
+          name: @manager.name,
+          contact_no: @manager.contact_no
         }
       }
       expect(response).to have_http_status(:unprocessable_entity)
@@ -125,9 +126,8 @@ RSpec.describe ManagersController,
 
   context 'DELETE#destroy' do
     it 'has destroy manager successfully' do
-      manager = FactoryBot.create(:manager)
-      delete :destroy, params: { id: manager.id }
-      expect(assigns(:manager)).to eq manager
+      delete :destroy, params: { id: @manager.id }
+      expect(assigns(:manager)).to eq @manager
       expect(response).to have_http_status(:ok)
     end
 

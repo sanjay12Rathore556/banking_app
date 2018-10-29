@@ -7,9 +7,9 @@ class AtmsController < ApplicationController
   def new
     @atm = Atm.new
     respond_to do |format|
-      format.html{}
-       format.json {render json: { atm: @atm }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { atm: @atm }, status: :ok }
+    end
   end
 
   def create
@@ -24,9 +24,9 @@ class AtmsController < ApplicationController
   def show
     @atm = Atm.find(params[:id])
     respond_to do |format|
-      format.html{}
-       format.json {render json: { atm: @atm }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { atm: @atm }, status: :ok }
+    end
   rescue ActiveRecord::RecordNotFound => e
     render json: { errors: e.message }, status: :not_found
   end
@@ -47,9 +47,9 @@ class AtmsController < ApplicationController
   def edit
     @atm = Atm.find(params[:id])
     respond_to do |format|
-      format.html{}
-       format.json {render json: { atm: @atm }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { atm: @atm }, status: :ok }
+    end
   rescue ActiveRecord::RecordNotFound => e
     render json: { error: e.message }, status: :not_found
   end
@@ -57,9 +57,9 @@ class AtmsController < ApplicationController
   def update
     @atm = Atm.find(params[:id])
     if @atm.update(atm_params)
-      
+
       render json: { atm: @atm }, status: :ok
-     
+
     else
       render json: @atm.errors, status: :unprocessable_entity
     end

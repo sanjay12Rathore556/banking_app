@@ -2,12 +2,17 @@
 
 require 'rails_helper'
 
-RSpec.describe LoansController,
-               type: :controller do
+RSpec.describe LoansController, type: :controller do
+  before :each do
+    @bank = FactoryBot.create(:bank)
+    @branch = FactoryBot.create(:branch, bank_id: @bank.id)
+    @user = FactoryBot.create(:user, branch_id: @branch.id)
+    @loan = FactoryBot.create(:loan, user_id: @user.id)
+  end
   context 'GET#index' do
     it 'has show all loans successfully' do
-      loan1 = FactoryBot.create(:loan)
-      loan2 = FactoryBot.create(:loan)
+      loan1 = FactoryBot.create(:loan, user_id: @user.id)
+      loan2 = FactoryBot.create(:loan, user_id: @user.id)
       get :index
       expect(assigns(:loans)).to include loan1
       expect(assigns(:loans)).to include loan2
@@ -16,9 +21,8 @@ RSpec.describe LoansController,
   end
   context 'GET#show' do
     it 'has get loan successfully' do
-      loan = FactoryBot.create(:loan)
-      get :show, params: { id: loan.id }
-      expect(assigns(:loan)).to eq(loan)
+      get :show, params: { id: @loan.id }
+      expect(assigns(:loan)).to eq(@loan)
       expect(response).to have_http_status(:ok)
     end
 
@@ -40,9 +44,8 @@ RSpec.describe LoansController,
   end
   context 'GET#edit' do
     it 'has get correct loan successfully' do
-      loan = FactoryBot.create(:loan)
-      get :edit, params: { id: loan.id }
-      expect(assigns(:loan)).to eq(loan)
+      get :edit, params: { id: @loan.id }
+      expect(assigns(:loan)).to eq(@loan)
       expect(response).to have_http_status(:ok)
     end
 
@@ -54,7 +57,7 @@ RSpec.describe LoansController,
 
   context 'POST#create' do
     it 'has create loan successfully' do
-      loan = FactoryBot.build(:loan)
+      loan = FactoryBot.build(:loan, user_id: @user.id)
       loan_params = {
         loan: {
           loan_type: loan.loan_type,
@@ -90,8 +93,8 @@ RSpec.describe LoansController,
 
   context 'PUT#update' do
     it 'has update loan successfully' do
-      loan1 = FactoryBot.create(:loan)
-      loan2 = FactoryBot.build(:loan)
+      loan1 = FactoryBot.create(:loan, user_id: @user.id)
+      loan2 = FactoryBot.build(:loan, user_id: @user.id)
       put :update,
           params: {
             id: loan1.id,
@@ -113,7 +116,7 @@ RSpec.describe LoansController,
     end
 
     it 'has not update loan with invalid inputs' do
-      loan1 = FactoryBot.create(:loan)
+      loan1 = FactoryBot.create(:loan, user_id: @user.id)
       put :update, params: {
         id: loan1.id, loan: {
           loan_type: nil, amount: nil, interest: nil, time_period: nil
@@ -123,13 +126,12 @@ RSpec.describe LoansController,
     end
 
     it 'has not update loan with invalid loan' do
-      loan = FactoryBot.create(:loan)
       put :update, params: {
         id: '123456', loan: {
-          loan_type: loan.loan_type,
-          amount: loan.amount,
-          interest: loan.interest,
-          time_period: loan.time_period
+          loan_type: @loan.loan_type,
+          amount: @loan.amount,
+          interest: @loan.interest,
+          time_period: @loan.time_period
         }
       }
       expect(response).to have_http_status(:unprocessable_entity)
@@ -138,9 +140,8 @@ RSpec.describe LoansController,
 
   context 'DELETE#destroy' do
     it 'has destroy loan successfully' do
-      loan = FactoryBot.create(:loan)
-      delete :destroy, params: { id: loan.id }
-      expect(assigns(:loan)).to eq loan
+      delete :destroy, params: { id: @loan.id }
+      expect(assigns(:loan)).to eq @loan
       expect(response).to have_http_status(:ok)
     end
 

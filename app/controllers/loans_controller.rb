@@ -7,9 +7,9 @@ class LoansController < ApplicationController
   def new
     @loan = Loan.new
     respond_to do |format|
-      format.html{}
-       format.json {render json: { loan: @loan }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { loan: @loan }, status: :ok }
+    end
   end
 
   def create
@@ -24,9 +24,9 @@ class LoansController < ApplicationController
   def show
     @loan = Loan.find(params[:id])
     respond_to do |format|
-      format.html{}
-       format.json {render json: { loan: @loan }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { loan: @loan }, status: :ok }
+    end
   rescue ActiveRecord::RecordNotFound => e
     render json: { errors: e.message }, status: :not_found
   end
@@ -47,9 +47,9 @@ class LoansController < ApplicationController
   def edit
     @loan = Loan.find(params[:id])
     respond_to do |format|
-      format.html{}
-       format.json {render json: { loan: @loan }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { loan: @loan }, status: :ok }
+    end
   rescue ActiveRecord::RecordNotFound => e
     render json: { error: e.message }, status: :not_found
   end
@@ -57,9 +57,9 @@ class LoansController < ApplicationController
   def update
     @loan = Loan.find(params[:id])
     if @loan.update(loan_params)
-      
+
       render json: { loan: @loan }, status: :ok
-     
+
     else
       render json: @loan.errors, status: :unprocessable_entity
     end

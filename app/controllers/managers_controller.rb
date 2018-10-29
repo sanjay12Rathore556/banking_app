@@ -7,9 +7,9 @@ class ManagersController < ApplicationController
   def new
     @manager = Manager.new
     respond_to do |format|
-      format.html{}
-       format.json {render json: { manager: @manager }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { manager: @manager }, status: :ok }
+    end
   end
 
   def create
@@ -24,9 +24,9 @@ class ManagersController < ApplicationController
   def show
     @manager = Manager.find(params[:id])
     respond_to do |format|
-      format.html{}
-       format.json {render json: { manager: @manager }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { manager: @manager }, status: :ok }
+    end
   rescue ActiveRecord::RecordNotFound => e
     render json: { errors: e.message }, status: :not_found
   end
@@ -47,9 +47,9 @@ class ManagersController < ApplicationController
   def edit
     @manager = Manager.find(params[:id])
     respond_to do |format|
-      format.html{}
-       format.json {render json: { manager: @manager }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { manager: @manager }, status: :ok }
+    end
   rescue ActiveRecord::RecordNotFound => e
     render json: { error: e.message }, status: :not_found
   end
@@ -57,7 +57,7 @@ class ManagersController < ApplicationController
   def update
     @manager = Manager.find(params[:id])
     if @manager.update(manager_params)
-     render json: { manager: @manager }, status: :ok
+      render json: { manager: @manager }, status: :ok
     else
       render json: @manager.errors, status: :unprocessable_entity
     end

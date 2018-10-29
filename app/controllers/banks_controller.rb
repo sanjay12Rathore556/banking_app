@@ -7,15 +7,15 @@ class BanksController < ApplicationController
   def new
     @bank = Bank.new
     respond_to do |format|
-      format.html{}
-       format.json {render json: { bank: @bank }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { bank: @bank }, status: :ok }
+    end
   end
 
   def create
     @bank = Bank.new(bank_params)
     if @bank.save
-       render json: { bank: @bank }, status: :created
+      render json: { bank: @bank }, status: :created
     else
       render json: { errors: @bank.errors }, status: :unprocessable_entity
     end
@@ -24,9 +24,9 @@ class BanksController < ApplicationController
   def show
     @bank = Bank.find(params[:id])
     respond_to do |format|
-      format.html{}
-       format.json {render json: { bank: @bank }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { bank: @bank }, status: :ok }
+    end
   rescue ActiveRecord::RecordNotFound => e
     render json: { errors: e.message }, status: :not_found
   end
@@ -42,17 +42,17 @@ class BanksController < ApplicationController
   def index
     @banks = Bank.all
     respond_to do |format|
-      format.html{}
-       format.json {render json: { banks: @banks }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { banks: @banks }, status: :ok }
+    end
   end
 
   def edit
     @bank = Bank.find(params[:id])
     respond_to do |format|
-      format.html{}
-       format.json {render json: { bank: @bank }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { bank: @bank }, status: :ok }
+    end
   rescue ActiveRecord::RecordNotFound => e
     render json: { error: e.message }, status: :not_found
   end
@@ -60,9 +60,9 @@ class BanksController < ApplicationController
   def update
     @bank = Bank.find(params[:id])
     if @bank.update(bank_params)
-      
-       render json: { bank: @bank }, status: :ok
-     
+
+      render json: { bank: @bank }, status: :ok
+
     else
       render json: @bank.errors, status: :unprocessable_entity
     end

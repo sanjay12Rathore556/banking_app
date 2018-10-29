@@ -2,12 +2,16 @@
 
 require 'rails_helper'
 
-RSpec.describe UsersController,
-               type: :controller do
+RSpec.describe UsersController, type: :controller do
+  before :each do
+    @bank = FactoryBot.create(:bank)
+    @branch = FactoryBot.create(:branch, bank_id: @bank.id)
+    @user = FactoryBot.create(:user, branch_id: @branch.id)
+  end
   context 'GET#index' do
     it 'has show all users successfully' do
-      user1 = FactoryBot.create(:user)
-      user2 = FactoryBot.create(:user)
+      user1 = FactoryBot.create(:user, branch_id: @branch.id)
+      user2 = FactoryBot.create(:user, branch_id: @branch.id)
       get :index
       expect(assigns(:users)).to include user1
       expect(assigns(:users)).to include user2
@@ -16,9 +20,8 @@ RSpec.describe UsersController,
   end
   context 'GET#show' do
     it 'has get user successfully' do
-      user = FactoryBot.create(:user)
-      get :show, params: { id: user.id }
-      expect(assigns(:user)).to eq(user)
+      get :show, params: { id: @user.id }
+      expect(assigns(:user)).to eq(@user)
       expect(response).to have_http_status(:ok)
     end
 
@@ -42,9 +45,8 @@ RSpec.describe UsersController,
   end
   context 'GET#edit' do
     it 'has get correct user successfully' do
-      user = FactoryBot.create(:user)
-      get :edit, params: { id: user.id }
-      expect(assigns(:user)).to eq(user)
+      get :edit, params: { id: @user.id }
+      expect(assigns(:user)).to eq(@user)
       expect(response).to have_http_status(:ok)
     end
 
@@ -56,7 +58,7 @@ RSpec.describe UsersController,
 
   context 'POST#create' do
     it 'has create user successfully' do
-      user = FactoryBot.build(:user)
+      user = FactoryBot.build(:user, branch_id: @branch.id)
       user_params = {
         user: {
           name: user.name,
@@ -98,8 +100,8 @@ RSpec.describe UsersController,
 
   context 'PUT#update' do
     it 'has update user successfully' do
-      user1 = FactoryBot.create(:user)
-      user2 = FactoryBot.build(:user)
+      user1 = FactoryBot.create(:user, branch_id: @branch.id)
+      user2 = FactoryBot.build(:user, branch_id: @branch.id)
       put :update,
           params: {
             id: user1.id,
@@ -125,7 +127,7 @@ RSpec.describe UsersController,
     end
 
     it 'has not update user with invalid inputs' do
-      user1 = FactoryBot.create(:user)
+      user1 = FactoryBot.create(:user, branch_id: @branch.id)
       put :update, params: {
         id: user1.id, user: {
           name: nil,
@@ -140,14 +142,13 @@ RSpec.describe UsersController,
     end
 
     it 'has not update user with invalid user' do
-      user = FactoryBot.create(:user)
       put :update, params: { id: '123456', user: {
-        name: user.name,
-        father_name: user.father_name,
-        mother_name: user.mother_name,
-        address: user.address,
-        age: user.age,
-        branch_id: user.branch_id
+        name: @user.name,
+        father_name: @user.father_name,
+        mother_name: @user.mother_name,
+        address: @user.address,
+        age: @user.age,
+        branch_id: @user.branch_id
       } }
       expect(response).to have_http_status(:unprocessable_entity)
     end
@@ -155,9 +156,8 @@ RSpec.describe UsersController,
 
   context 'DELETE#destroy' do
     it 'has destroy user successfully' do
-      user = FactoryBot.create(:user)
-      delete :destroy, params: { id: user.id }
-      expect(assigns(:user)).to eq user
+      delete :destroy, params: { id: @user.id }
+      expect(assigns(:user)).to eq @user
       expect(response).to have_http_status(:ok)
     end
 

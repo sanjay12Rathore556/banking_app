@@ -2,7 +2,6 @@
 
 FactoryBot.define do
   factory :user do
-    branch_id { FactoryBot.create(:branch).id }
     name { Faker::Name.name }
     age { Faker::Number.between(1, 100) }
     address { Faker::Address.street_address }

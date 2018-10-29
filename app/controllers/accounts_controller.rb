@@ -7,9 +7,9 @@ class AccountsController < ApplicationController
   def new
     @account = Account.new
     respond_to do |format|
-      format.html{}
-       format.json {render json: { account: @account }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { account: @account }, status: :ok }
+    end
   end
 
   def create
@@ -24,9 +24,9 @@ class AccountsController < ApplicationController
   def show
     @account = Account.find(params[:id])
     respond_to do |format|
-      format.html{}
-       format.json {render json: { account: @account }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { account: @account }, status: :ok }
+    end
   rescue ActiveRecord::RecordNotFound => e
     render json: { errors: e.message }, status: :not_found
   end
@@ -47,9 +47,9 @@ class AccountsController < ApplicationController
   def edit
     @account = Account.find(params[:id])
     respond_to do |format|
-      format.html{}
-       format.json {render json: { account: @account }, status: :ok}
-     end
+      format.html {}
+      format.json { render json: { account: @account }, status: :ok }
+    end
   rescue ActiveRecord::RecordNotFound => e
     render json: { error: e.message }, status: :not_found
   end
@@ -57,7 +57,7 @@ class AccountsController < ApplicationController
   def update
     @account = Account.find(params[:id])
     if @account.update(account_params)
-       render json: { account: @account }, status: :ok
+      render json: { account: @account }, status: :ok
     else
       render json: @account.errors, status: :unprocessable_entity
     end

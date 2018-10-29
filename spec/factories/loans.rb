@@ -2,7 +2,6 @@
 
 FactoryBot.define do
   factory :loan do
-    user_id { FactoryBot.create(:user).id }
     loan_type %w[
       Education_Loan Home_Loan Personal_Loan Business_Loan Car_Loan
     ].sample

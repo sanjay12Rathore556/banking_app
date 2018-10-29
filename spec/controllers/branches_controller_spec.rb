@@ -2,12 +2,15 @@
 
 require 'rails_helper'
 
-RSpec.describe BranchesController,
-               type: :controller do
+RSpec.describe BranchesController, type: :controller do
+  before :each do
+    @bank = FactoryBot.create(:bank)
+    @branch = FactoryBot.create(:branch, bank_id: @bank.id)
+  end
   context 'GET#index' do
     it 'has show all branches successfully' do
-      branch1 = FactoryBot.create(:branch)
-      branch2 = FactoryBot.create(:branch)
+      branch1 = FactoryBot.create(:branch, bank_id: @bank.id)
+      branch2 = FactoryBot.create(:branch, bank_id: @bank.id)
       get :index
       expect(assigns(:branches)).to include branch1
       expect(assigns(:branches)).to include branch2
@@ -16,9 +19,8 @@ RSpec.describe BranchesController,
   end
   context 'GET#show' do
     it 'has get branch successfully' do
-      branch = FactoryBot.create(:branch)
-      get :show, params: { id: branch.id }
-      expect(assigns(:branch)).to eq(branch)
+      get :show, params: { id: @branch.id }
+      expect(assigns(:branch)).to eq(@branch)
       expect(response).to have_http_status(:ok)
     end
 
@@ -40,9 +42,8 @@ RSpec.describe BranchesController,
   end
   context 'GET#edit' do
     it 'has get correct branch successfully' do
-      branch = FactoryBot.create(:branch)
-      get :edit, params: { id: branch.id }
-      expect(assigns(:branch)).to eq(branch)
+      get :edit, params: { id: @branch.id }
+      expect(assigns(:branch)).to eq(@branch)
       expect(response).to have_http_status(:ok)
     end
 
@@ -54,8 +55,7 @@ RSpec.describe BranchesController,
 
   context 'POST#create' do
     it 'has create branch successfully' do
-      branch = FactoryBot.build(:branch)
-      p branch
+      branch = FactoryBot.build(:branch, bank_id: @bank.id)
       branch_params = {
         branch: {
           name: branch.name,
@@ -87,8 +87,8 @@ RSpec.describe BranchesController,
 
   context 'PUT#update' do
     it 'has update branch successfully' do
-      branch1 = FactoryBot.create(:branch)
-      branch2 = FactoryBot.build(:branch)
+      branch1 = FactoryBot.create(:branch, bank_id: @bank.id)
+      branch2 = FactoryBot.build(:branch, bank_id: @bank.id)
       put :update,
           params: {
             id: branch1.id,
@@ -110,7 +110,7 @@ RSpec.describe BranchesController,
     end
 
     it 'has not update branch with invalid inputs' do
-      branch1 = FactoryBot.create(:branch)
+      branch1 = FactoryBot.create(:branch, bank_id: @bank.id)
       put :update, params: {
         id: branch1.id, branch: {
           name: nil, address: nil, IFSC_code: nil, contact_no: nil
@@ -120,12 +120,11 @@ RSpec.describe BranchesController,
     end
 
     it 'has not update branch with invalid branch' do
-      branch = FactoryBot.create(:branch)
       put :update, params: { id: '123456', branch: {
-        name: branch.name,
-        address: branch.address,
-        IFSC_code: branch.IFSC_code,
-        contact_no: branch.contact_no
+        name: @branch.name,
+        address: @branch.address,
+        IFSC_code: @branch.IFSC_code,
+        contact_no: @branch.contact_no
       } }
       expect(response).to have_http_status(:unprocessable_entity)
     end
@@ -133,9 +132,8 @@ RSpec.describe BranchesController,
 
   context 'DELETE#destroy' do
     it 'has destroy branch successfully' do
-      branch = FactoryBot.create(:branch)
-      delete :destroy, params: { id: branch.id }
-      expect(assigns(:branch)).to eq branch
+      delete :destroy, params: { id: @branch.id }
+      expect(assigns(:branch)).to eq @branch
       expect(response).to have_http_status(:ok)
     end
 

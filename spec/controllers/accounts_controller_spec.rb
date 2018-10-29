@@ -2,8 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AccountsController,
-               type: :controller do
+RSpec.describe AccountsController, type: :controller do
   before :each do
     @bank = FactoryBot.create(:bank)
     @branch = FactoryBot.create(:branch, bank_id: @bank.id)

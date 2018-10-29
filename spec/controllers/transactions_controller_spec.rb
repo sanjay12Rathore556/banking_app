@@ -5,15 +5,16 @@ require 'rails_helper'
 RSpec.describe TransactionsController, type: :controller do
   before :each do
     @bank = FactoryBot.create(:bank)
+    @atm = FactoryBot.create(:atm, bank_id: @bank.id)
     @branch = FactoryBot.create(:branch, bank_id: @bank.id)
     @user = FactoryBot.create(:user, branch_id: @branch.id)
     @account = FactoryBot.create(:account, user_id: @user.id)
-    @transaction = FactoryBot.create(:transaction, account_id: @account.id)
+    @transaction = FactoryBot.create(:transaction, account_id: @account.id, atm_id: @atm.id)
   end
   context 'GET#index' do
     it 'has show all transactions successfully' do
-      transaction1 = FactoryBot.create(:transaction, account_id: @account.id)
-      transaction2 = FactoryBot.create(:transaction, account_id: @account.id)
+      transaction1 = FactoryBot.create(:transaction, account_id: @account.id, atm_id: @atm.id)
+      transaction2 = FactoryBot.create(:transaction, account_id: @account.id, atm_id: @atm.id)
       get :index
       expect(assigns(:transactions)).to include transaction1
       expect(assigns(:transactions)).to include transaction2
@@ -57,7 +58,7 @@ RSpec.describe TransactionsController, type: :controller do
 
   context 'POST#create' do
     it 'has create transaction successfully' do
-      @transaction = FactoryBot.build(:transaction, account_id: @account.id)
+      @transaction = FactoryBot.build(:transaction, account_id: @account.id, atm_id: @atm.id)
       transaction_params = {
         transaction: {
           amount: @transaction.amount,
@@ -89,8 +90,8 @@ RSpec.describe TransactionsController, type: :controller do
 
   context 'PUT#update' do
     it 'has update transaction successfully' do
-      transaction1 = FactoryBot.create(:transaction, account_id: @account.id)
-      transaction2 = FactoryBot.build(:transaction, account_id: @account.id)
+      transaction1 = FactoryBot.create(:transaction, account_id: @account.id, atm_id: @atm.id)
+      transaction2 = FactoryBot.build(:transaction, account_id: @account.id, atm_id: @atm.id)
       put :update,
           params: {
             id: transaction1.id,

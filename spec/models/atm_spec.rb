@@ -3,15 +3,23 @@
 require 'rails_helper'
 
 RSpec.describe Atm, type: :model do
+  before :each do
+    @bank = FactoryBot.create(:bank)
+    @atm = FactoryBot.create(:atm, bank_id: @bank.id)
+    @branch = FactoryBot.create(:branch, bank_id: @bank.id)
+    @user = FactoryBot.create(:user, branch_id: @branch.id)
+    @account = FactoryBot.create(:account, user_id: @user.id)
+    @transaction = FactoryBot.build(:transaction, account_id: @account.id)
+  end
   context 'atm validation' do
     it 'has valid factory' do
-      expect(FactoryBot.create(:atm)).to be_valid
+      expect(FactoryBot.create(:atm, bank_id: @bank.id)).to be_valid
     end
     it 'is invalid without a name' do
-      expect(FactoryBot.build(:atm, name: nil)).not_to be_valid
+      expect(FactoryBot.build(:atm, name: nil, bank_id: @bank.id)).not_to be_valid
     end
     it 'is invalid without address' do
-      expect(FactoryBot.build(:atm, address: nil)).not_to be_valid
+      expect(FactoryBot.build(:atm, address: nil, bank_id: @bank.id)).not_to be_valid
     end
     it 'is invalid without bank' do
       expect(FactoryBot.build(:atm, bank_id: nil)).to be_invalid
@@ -19,32 +27,25 @@ RSpec.describe Atm, type: :model do
   end
   context 'atm associations' do
     it 'has many transactions' do
-      @b = FactoryBot.create(:branch)
-      @u = FactoryBot.create(:user, branch_id: @b.id)
-      @a = FactoryBot.create(:account, user_id: @u.id)
-      @atm = FactoryBot.create(:atm)
-      @t = FactoryBot.create(:transaction, account_id: @a.id, atm_id: @atm.id)
-      @t2 = FactoryBot.create(:transaction, account_id: @a.id, atm_id: @atm.id)
+      @atm = FactoryBot.create(:atm, bank_id: @bank.id)
+      @t = FactoryBot.create(:transaction, account_id: @account.id, atm_id: @atm.id)
+      @t2 = FactoryBot.create(:transaction, account_id: @account.id, atm_id: @atm.id)
       expect(@atm.transactions).to include(@t)
       expect(@atm.transactions).to include(@t2)
     end
     it 'has not unincluded tarnsactions' do
-      @b = FactoryBot.create(:branch, IFSC_code: 'GGDGF34')
-      @u = FactoryBot.create(:user, branch_id: @b.id)
-      @a = FactoryBot.create(:account, user_id: @u.id)
-      @atm1 = FactoryBot.create(:atm)
-      @atm2 = FactoryBot.create(:atm)
-      @t1 = FactoryBot.create(:transaction, account_id: @a.id, atm_id: @atm1.id)
-      @t2 = FactoryBot.create(:transaction, account_id: @a.id, atm_id: @atm2.id)
+      @atm1 = FactoryBot.create(:atm, bank_id: @bank.id)
+      @atm2 = FactoryBot.create(:atm, bank_id: @bank.id)
+      @t1 = FactoryBot.create(:transaction, account_id: @account.id, atm_id: @atm1.id)
+      @t2 = FactoryBot.create(:transaction, account_id: @account.id, atm_id: @atm2.id)
       expect(@atm1.transactions).to include(@t1)
       expect(@atm1.transactions).not_to include(@t2)
       expect(@atm2.transactions).to include(@t2)
       expect(@atm2.transactions).not_to include(@t1)
     end
     it 'has belongs to bank' do
-      @b = FactoryBot.create(:bank)
-      @a = FactoryBot.create(:atm, bank_id: @b.id)
-      expect(@a.bank.id).to eq(@b.id)
+      @a = FactoryBot.create(:atm, bank_id: @bank.id)
+      expect(@a.bank.id).to eq(@bank.id)
     end
     it 'is not belongs to invalid bank' do
       @b1 = FactoryBot.create(:bank)
