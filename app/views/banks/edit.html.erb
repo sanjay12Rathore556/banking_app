@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=“UTF-8”>
+    <meta lang=“english”>
+    <meta title=“bank”>
+    <title>Banking System</title>
+  </head>
+  <body>
+    <h1>Edit bank</h1>
+		<form class="form">
+			<input id="BankId" type="text" name="bankId" hidden="true">
+		  <label class="heading">Bank name:</label>
+		  <input id="BankName" class="data" type="text" name="BankName">
+		  <br>
+		  <label class="heading">Contact No:</label>
+		  <input id="ContactNo" class="data" type="text" name="contact_no">
+		  <br><br>
+		  <input class="button submit" type="button" value="Submit">
+		</form> 
+  </body>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      var pageLoaded = new EditBank.pageLoaded();
+    });
+  </script>
+</html>

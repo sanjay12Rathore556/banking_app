@@ -1,0 +1,23 @@
+<%= form_for @branch.loans.build do |form| %>
+  <p>
+    <%= form.label :loan_type %><br>
+    <%= form.text_field :loan_type %>
+  </p>
+  <p>
+    <%= form.label :amount %><br>
+    <%= form.text_field :amount %>
+    <%= form.hidden_field :user_id, :value => @user.id %>
+  </p>
+  <p>
+    <%= form.label :interest %><br>
+    <%= form.text_field :interest %>
+  </p>
+  <p>
+    <%= form.label :time_period %><br>
+    <%= form.text_field :time_period %>
+  </p>
+  
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>

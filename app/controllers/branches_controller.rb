@@ -6,7 +6,10 @@ class BranchesController < ApplicationController
 
   def new
     @branch = Branch.new
-    render json: { branch: @branch }, status: :ok
+    respond_to do |format|
+      format.html{}
+       format.json {render json: { branch: @branch }, status: :ok}
+     end
   end
 
   def create
@@ -20,7 +23,10 @@ class BranchesController < ApplicationController
 
   def show
     @branch = Branch.find(params[:id])
-    render json: { branch: @branch }, status: :ok
+    respond_to do |format|
+      format.html{}
+       format.json {render json: { branch: @branch }, status: :ok}
+     end
   rescue ActiveRecord::RecordNotFound => e
     render json: { errors: e.message }, status: :not_found
   end
@@ -35,12 +41,15 @@ class BranchesController < ApplicationController
 
   def index
     @branches = Branch.all
-    render json: { branchs: @branchs }, status: :ok
+    render json: { branches: @branches }, status: :ok
   end
 
   def edit
     @branch = Branch.find(params[:id])
-    render json: { branch: @branch }, status: :ok
+    respond_to do |format|
+      format.html{}
+       format.json {render json: { branch: @branch }, status: :ok}
+     end
   rescue ActiveRecord::RecordNotFound => e
     render json: { error: e.message }, status: :not_found
   end
@@ -48,7 +57,9 @@ class BranchesController < ApplicationController
   def update
     @branch = Branch.find(params[:id])
     if @branch.update(branch_params)
-      render json: { branch: @branch }, status: :ok
+      
+       render json: { branch: @branch }, status: :ok
+     
     else
       render json: @branch.errors, status: :unprocessable_entity
     end
@@ -59,8 +70,6 @@ class BranchesController < ApplicationController
   private
 
   def branch_params
-    params.require(:branch).permit(
-      :name, :address, :contact_no, :IFSC_code, :branch_id, :bank_id
-    )
+    params.require(:branch).permit( :name, :address, :contact_no, :IFSC_code, :bank_id)
   end
 end

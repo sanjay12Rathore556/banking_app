@@ -78,7 +78,7 @@ RSpec.describe Account, type: :model do
       expect(@a.user.id).to eq(@user.id)
     end
     it 'is not belongs to invalid user' do
-      @branch = FactoryBot.create(:branch, IFSC_code: 'SBBJ088')
+      @branch = FactoryBot.create(:branch)
       @user1 = FactoryBot.create(:user, branch_id: @branch.id)
       @user2 = FactoryBot.create(:user)
 

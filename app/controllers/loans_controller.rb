@@ -6,7 +6,10 @@ class LoansController < ApplicationController
 
   def new
     @loan = Loan.new
-    render json: { loan: @loan }, status: :ok
+    respond_to do |format|
+      format.html{}
+       format.json {render json: { loan: @loan }, status: :ok}
+     end
   end
 
   def create
@@ -20,7 +23,10 @@ class LoansController < ApplicationController
 
   def show
     @loan = Loan.find(params[:id])
-    render json: { loan: @loan }, status: :ok
+    respond_to do |format|
+      format.html{}
+       format.json {render json: { loan: @loan }, status: :ok}
+     end
   rescue ActiveRecord::RecordNotFound => e
     render json: { errors: e.message }, status: :not_found
   end
@@ -40,7 +46,10 @@ class LoansController < ApplicationController
 
   def edit
     @loan = Loan.find(params[:id])
-    render json: { loan: @loan }, status: :ok
+    respond_to do |format|
+      format.html{}
+       format.json {render json: { loan: @loan }, status: :ok}
+     end
   rescue ActiveRecord::RecordNotFound => e
     render json: { error: e.message }, status: :not_found
   end
@@ -48,7 +57,9 @@ class LoansController < ApplicationController
   def update
     @loan = Loan.find(params[:id])
     if @loan.update(loan_params)
+      
       render json: { loan: @loan }, status: :ok
+     
     else
       render json: @loan.errors, status: :unprocessable_entity
     end
@@ -60,6 +71,6 @@ class LoansController < ApplicationController
 
   def loan_params
     params.require(:loan).permit(:loan_type, :amount, :interest,
-                                 :time_period, :branch_id, :user_id)
+                                 :time_period, :user_id)
   end
 end

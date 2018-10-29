@@ -6,7 +6,10 @@ class AtmsController < ApplicationController
 
   def new
     @atm = Atm.new
-    render json: { atm: @atm }, status: :ok
+    respond_to do |format|
+      format.html{}
+       format.json {render json: { atm: @atm }, status: :ok}
+     end
   end
 
   def create
@@ -20,7 +23,10 @@ class AtmsController < ApplicationController
 
   def show
     @atm = Atm.find(params[:id])
-    render json: { atm: @atm }, status: :ok
+    respond_to do |format|
+      format.html{}
+       format.json {render json: { atm: @atm }, status: :ok}
+     end
   rescue ActiveRecord::RecordNotFound => e
     render json: { errors: e.message }, status: :not_found
   end
@@ -40,7 +46,10 @@ class AtmsController < ApplicationController
 
   def edit
     @atm = Atm.find(params[:id])
-    render json: { atm: @atm }, status: :ok
+    respond_to do |format|
+      format.html{}
+       format.json {render json: { atm: @atm }, status: :ok}
+     end
   rescue ActiveRecord::RecordNotFound => e
     render json: { error: e.message }, status: :not_found
   end
@@ -48,7 +57,9 @@ class AtmsController < ApplicationController
   def update
     @atm = Atm.find(params[:id])
     if @atm.update(atm_params)
+      
       render json: { atm: @atm }, status: :ok
+     
     else
       render json: @atm.errors, status: :unprocessable_entity
     end
@@ -59,6 +70,6 @@ class AtmsController < ApplicationController
   private
 
   def atm_params
-    params.require(:atm).permit(:name, :address, :atm_id, :bank_id)
+    params.require(:atm).permit(:name, :address, :bank_id)
   end
 end

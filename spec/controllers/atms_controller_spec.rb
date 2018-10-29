@@ -2,8 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AtmsController,
-               type: :controller do
+RSpec.describe AtmsController, type: :controller do
   context 'GET#index' do
     it 'has show all atms successfully' do
       atm1 = FactoryBot.create(:atm)
@@ -89,14 +88,13 @@ RSpec.describe AtmsController,
             atm: {
               name: atm2.name,
               address: atm2.address,
-
               bank_id: atm2.bank_id
             }
           }
       expect(assigns(:atm).id).to eq atm1.id
       expect(assigns(:atm).name).to eq atm2.name
       expect(assigns(:atm).address).to eq atm2.address
-
+      expect(assigns(:atm).bank_id).to eq atm2.bank_id
       expect(response).to have_http_status(:ok)
     end
 

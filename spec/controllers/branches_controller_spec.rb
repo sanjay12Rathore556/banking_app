@@ -55,6 +55,7 @@ RSpec.describe BranchesController,
   context 'POST#create' do
     it 'has create branch successfully' do
       branch = FactoryBot.build(:branch)
+      p branch
       branch_params = {
         branch: {
           name: branch.name,

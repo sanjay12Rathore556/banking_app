@@ -19,7 +19,7 @@ RSpec.describe Atm, type: :model do
   end
   context 'atm associations' do
     it 'has many transactions' do
-      @b = FactoryBot.create(:branch, IFSC_code: 'GGDGF34')
+      @b = FactoryBot.create(:branch)
       @u = FactoryBot.create(:user, branch_id: @b.id)
       @a = FactoryBot.create(:account, user_id: @u.id)
       @atm = FactoryBot.create(:atm)

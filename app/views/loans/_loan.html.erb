@@ -1,0 +1,20 @@
+<p>
+  <strong>Loan_type:</strong>
+  <%= @loan.loan_type %>
+</p>
+ 
+<p>
+  <strong>amount:</strong>
+  <%= @loan.amount %>
+</p>
+<p>
+  <strong>interest:</strong>
+  <%= @loan.interest %>
+</p>
+<p>
+  <strong>time_period:</strong>
+  <%= @loan.time_period %>
+</p>
+<%= link_to 'Destroy_loan', [loan], method: :delete, data: { confirm: 'Are you sure?' } %>
+<%= link_to 'Edit', edit_loan_path(@loan) %> 
+<%= link_to 'Back', loans_path %>

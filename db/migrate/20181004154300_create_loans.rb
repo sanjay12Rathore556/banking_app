@@ -8,7 +8,7 @@ class CreateLoans < ActiveRecord::Migration[5.2]
       t.integer :amount
       t.integer :interest
       t.integer :time_period
-      t.references :branch, index: true, foreign_key: true
+
       t.references :user, index: true, foreign_key: true
       t.timestamps
     end

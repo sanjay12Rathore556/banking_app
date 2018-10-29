@@ -6,7 +6,10 @@ class TransactionsController < ApplicationController
 
   def new
     @transaction = Transaction.new
-    render json: { transaction: @transaction }, status: :ok
+    respond_to do |format|
+      format.html{}
+       format.json {render json: { transaction: @transaction }, status: :ok}
+     end
   end
 
   def create
@@ -21,7 +24,10 @@ class TransactionsController < ApplicationController
 
   def show
     @transaction = Transaction.find(params[:id])
-    render json: { transaction: @transaction }, status: :ok
+    respond_to do |format|
+      format.html{}
+       format.json {render json: { transaction: @transaction }, status: :ok}
+     end
   rescue ActiveRecord::RecordNotFound => e
     render json: { errors: e.message }, status: :not_found
   end
@@ -41,7 +47,10 @@ class TransactionsController < ApplicationController
 
   def edit
     @transaction = Transaction.find(params[:id])
-    render json: { transaction: @transaction }, status: :ok
+    respond_to do |format|
+      format.html{}
+       format.json {render json: { transaction: @transaction }, status: :ok}
+     end
   rescue ActiveRecord::RecordNotFound => e
     render json: { error: e.message }, status: :not_found
   end
@@ -50,6 +59,7 @@ class TransactionsController < ApplicationController
     @transaction = Transaction.find(params[:id])
     if @transaction.update(transaction_params)
       render json: { transaction: @transaction }, status: :ok
+     
     else
       render json: @transaction.errors, status: :unprocessable_entity
     end

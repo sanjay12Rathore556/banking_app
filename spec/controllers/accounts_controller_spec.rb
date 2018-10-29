@@ -4,10 +4,16 @@ require 'rails_helper'
 
 RSpec.describe AccountsController,
                type: :controller do
+  before :each do
+    @bank = FactoryBot.create(:bank)
+    @branch = FactoryBot.create(:branch, bank_id: @bank.id)
+    @user = FactoryBot.create(:user, branch_id: @branch.id)
+    @account = FactoryBot.create(:account, user_id: @user.id)
+  end
   context 'GET#index' do
     it 'has show all accounts successfully' do
-      account1 = FactoryBot.create(:account)
-      account2 = FactoryBot.create(:account)
+      account1 = FactoryBot.create(:account, user_id: @user.id)
+      account2 = FactoryBot.create(:account, user_id: @user.id)
       get :index
       expect(assigns(:accounts)).to include account1
       expect(assigns(:accounts)).to include account2
@@ -16,9 +22,8 @@ RSpec.describe AccountsController,
   end
   context 'GET#show' do
     it 'has get account successfully' do
-      account = FactoryBot.create(:account)
-      get :show, params: { id: account.id }
-      expect(assigns(:account)).to eq(account)
+      get :show, params: { id: @account.id }
+      expect(assigns(:account)).to eq(@account)
       expect(response).to have_http_status(:ok)
     end
 
@@ -39,9 +44,8 @@ RSpec.describe AccountsController,
   end
   context 'GET#edit' do
     it 'has get correct account successfully' do
-      account = FactoryBot.create(:account)
-      get :edit, params: { id: account.id }
-      expect(assigns(:account)).to eq(account)
+      get :edit, params: { id: @account.id }
+      expect(assigns(:account)).to eq(@account)
       expect(response).to have_http_status(:ok)
     end
 
@@ -53,20 +57,20 @@ RSpec.describe AccountsController,
 
   context 'POST#create' do
     it 'has create account successfully' do
-      account = FactoryBot.build(:account)
+      @account1 = FactoryBot.build(:account, user_id: @user.id)
       account_params = {
         account: {
-          account_no: account.account_no,
-          account_type: account.account_type,
-          balance: account.balance,
-          user_id: account.user_id
+          account_no: @account1.account_no,
+          account_type: @account1.account_type,
+          balance: @account1.balance,
+          user_id: @account1.user_id
         }
       }
       post :create, params: account_params
-      expect(assigns(:account).account_no).to eq account.account_no
-      expect(assigns(:account).account_type).to eq account.account_type
-      expect(assigns(:account).balance).to eq account.balance
-      expect(assigns(:account).user_id).to eq account.user_id
+      expect(assigns(:account).account_no).to eq @account1.account_no
+      expect(assigns(:account).account_type).to eq @account1.account_type
+      expect(assigns(:account).balance).to eq @account1.balance
+      expect(assigns(:account).user_id).to eq @account1.user_id
       expect(response).to have_http_status(:created)
     end
 
@@ -83,10 +87,8 @@ RSpec.describe AccountsController,
 
   context 'PUT#update' do
     it 'has update account successfully' do
-      @b = FactoryBot.create(:branch, IFSC_code: 'etugght34')
-      @u = FactoryBot.create(:user, branch_id: @b.id)
-      account1 = FactoryBot.create(:account)
-      account2 = FactoryBot.build(:account)
+      account1 = FactoryBot.create(:account, user_id: @user.id)
+      account2 = FactoryBot.build(:account, user_id: @user.id)
       put :update,
           params: {
             id: account1.id,
@@ -106,7 +108,7 @@ RSpec.describe AccountsController,
     end
 
     it 'has not update account with invalid inputs' do
-      account1 = FactoryBot.create(:account)
+      account1 = FactoryBot.create(:account, user_id: @user.id)
       put :update, params: {
         id: account1.id, account: {
           account_no: nil, account_type: nil, balance: nil
@@ -116,11 +118,10 @@ RSpec.describe AccountsController,
     end
 
     it 'has not update account with invalid account' do
-      account = FactoryBot.create(:account)
       put :update, params: { id: '123456', account: {
-        account_no: account.account_no,
-        account_type: account.account_type,
-        balance: account.balance
+        account_no: @account.account_no,
+        account_type: @account.account_type,
+        balance: @account.balance
       } }
       expect(response).to have_http_status(:unprocessable_entity)
     end
@@ -128,9 +129,8 @@ RSpec.describe AccountsController,
 
   context 'DELETE#destroy' do
     it 'has destroy account successfully' do
-      account = FactoryBot.create(:account)
-      delete :destroy, params: { id: account.id }
-      expect(assigns(:account)).to eq account
+      delete :destroy, params: { id: @account.id }
+      expect(assigns(:account)).to eq @account
       expect(response).to have_http_status(:ok)
     end
 
