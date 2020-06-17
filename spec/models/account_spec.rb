@@ -3,10 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe Account, type: :model do
+  before :each do
+    @bank = FactoryBot.create(:bank)
+    @atm = FactoryBot.create(:atm, bank_id: @bank.id)
+    @branch = FactoryBot.create(:branch, bank_id: @bank.id)
+    @user = FactoryBot.create(:user, branch_id: @branch.id)
+    @account = FactoryBot.create(:account, user_id: @user.id)
+  end
   context 'account validation' do
     it 'has a valid factory' do
-      @userid = FactoryBot.create(:user)
-      expect(FactoryBot.build(:account, user_id: @userid.id)).to be_valid
+      expect(FactoryBot.build(:account, user_id: @user.id)).to be_valid
     end
     it 'is invalid without account_no' do
       expect(FactoryBot.build(:account, account_no: nil)).to be_invalid
@@ -19,16 +25,13 @@ RSpec.describe Account, type: :model do
       expect(FactoryBot.build(:account, account_type: nil)).not_to be_valid
     end
     it 'has valid account type' do
-      @userid = FactoryBot.create(:user)
       expect(FactoryBot.build(
-               :account, account_type: 'saving', user_id: @userid.id
+               :account, account_type: 'saving', user_id: @user.id
              )).to be_valid
     end
     it 'has valid account type' do
-      @userid = FactoryBot.create(:user)
-
       expect(
-        FactoryBot.build(:account, account_type: 'current', user_id: @userid.id)
+        FactoryBot.build(:account, account_type: 'current', user_id: @user.id)
       ).to be_valid
     end
     it 'is invalid without a valid account_type' do
@@ -54,34 +57,28 @@ RSpec.describe Account, type: :model do
   end
   context 'account associations' do
     it 'has many transactions' do
-      @userid = FactoryBot.create(:user)
-      @account = FactoryBot.create(:account, user_id: @userid.id)
-      @t1 = FactoryBot.create(:transaction, account_id: @account.id)
-      @t2 = FactoryBot.create(:transaction, account_id: @account.id)
+      @t1 = FactoryBot.create(:transaction, account_id: @account.id, atm_id: @atm.id)
+      @t2 = FactoryBot.create(:transaction, account_id: @account.id, atm_id: @atm.id)
       expect(@account.transactions).to include(@t1)
       expect(@account.transactions).to include(@t2)
     end
     it 'has not unincluded transactions' do
-      @userid = FactoryBot.create(:user)
-      @a1 = FactoryBot.create(:account, user_id: @userid.id)
-      @a2 = FactoryBot.create(:account, user_id: @userid.id)
-      @t1 = FactoryBot.create(:transaction, account_id: @a1.id)
-      @t2 = FactoryBot.create(:transaction, account_id: @a2.id)
+      @a1 = FactoryBot.create(:account, user_id: @user.id)
+      @a2 = FactoryBot.create(:account, user_id: @user.id)
+      @t1 = FactoryBot.create(:transaction, account_id: @a1.id, atm_id: @atm.id)
+      @t2 = FactoryBot.create(:transaction, account_id: @a2.id, atm_id: @atm.id)
       expect(@a1.transactions).to include(@t1)
       expect(@a1.transactions).not_to include(@t2)
       expect(@a2.transactions).to include(@t2)
       expect(@a2.transactions).not_to include(@t1)
     end
     it 'is belongs to user' do
-      @user = FactoryBot.create(:user)
       @a = FactoryBot.create(:account, user_id: @user.id)
       expect(@a.user.id).to eq(@user.id)
     end
     it 'is not belongs to invalid user' do
-      @branch = FactoryBot.create(:branch, IFSC_code: 'SBBJ088')
       @user1 = FactoryBot.create(:user, branch_id: @branch.id)
-      @user2 = FactoryBot.create(:user)
-
+      @user2 = FactoryBot.create(:user, branch_id: @branch.id)
       @a = FactoryBot.create(:account, user_id: @user1.id)
       expect(@a.user.id).to eq(@user1.id)
       expect(@a.user.id).not_to eq(@user2.id)

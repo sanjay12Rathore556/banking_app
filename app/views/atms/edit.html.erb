@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=“UTF-8”>
+    <meta lang=“english”>
+    <meta title=“bank”>
+    <title>Banking System</title>
+  </head>
+  <body>
+    <h1>Edit Atm</h1>
+		<form class="newatm">
+        <input class="bankId" id="BankId" type="text" name="bankId" hidden="true">
+        <input class="atmId" id="AtmId" type="text" name="atmId" hidden="true">
+        <label class="heading">Atm name:</label>
+        <input class="data" id="AtmName"type="text" name="atmkName">
+        <label class="heading">Address:</label>
+        <input class="data" id="AtmAddress" type="text" name="address">
+        <input class="button submit" type="button" value="Submit">
+      </form> 
+  </body>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      var pageLoaded = new EditAtm.pageLoaded();
+    });
+  </script>
+</html>

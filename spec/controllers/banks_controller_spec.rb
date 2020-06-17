@@ -2,8 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe BanksController,
-               type: :controller do
+RSpec.describe BanksController, type: :controller do
+  before :each do
+    @bank = FactoryBot.create(:bank)
+  end
   context 'GET#index' do
     it 'has show all banks successfully' do
       bank1 = FactoryBot.create(:bank)
@@ -16,14 +18,13 @@ RSpec.describe BanksController,
   end
   context 'GET#show' do
     it 'has get bank successfully' do
-      bank = FactoryBot.create(:bank)
-      get :show, params: { id: bank.id }
-      expect(assigns(:bank)).to eq(bank)
+      get :show, params: { id: @bank.id }
+      expect(assigns(:bank)).to eq(@bank)
       expect(response).to have_http_status(:ok)
     end
 
     it 'has not get invalid bank' do
-      get :show, params: { id: '12345' }
+      get :show, params: { id: '12345' }, format: 'json'
       expect(response).to have_http_status(:not_found)
     end
   end
@@ -38,9 +39,8 @@ RSpec.describe BanksController,
   end
   context 'GET#edit' do
     it 'has get correct bank successfully' do
-      bank = FactoryBot.create(:bank)
-      get :edit, params: { id: bank.id }
-      expect(assigns(:bank)).to eq(bank)
+      get :edit, params: { id: @bank.id }
+      expect(assigns(:bank)).to eq(@bank)
       expect(response).to have_http_status(:ok)
     end
 
@@ -52,17 +52,16 @@ RSpec.describe BanksController,
 
   context 'POST#create' do
     it 'has create bank successfully' do
-      bank = FactoryBot.build(:bank)
       bank_params = {
         bank: {
-          name: bank.name,
-          contact_no: bank.contact_no
+          name: @bank.name,
+          contact_no: @bank.contact_no
 
         }
       }
-      post :create, params: bank_params
-      expect(assigns(:bank).name).to eq bank.name
-      expect(assigns(:bank).contact_no).to eq bank.contact_no
+      post :create, params: bank_params, format: 'json'
+      expect(assigns(:bank).name).to eq @bank.name
+      expect(assigns(:bank).contact_no).to eq @bank.contact_no
 
       expect(response).to have_http_status(:created)
     end
@@ -73,7 +72,7 @@ RSpec.describe BanksController,
           name: nil, contact_no: nil
         }
       }
-      post :create, params: bank_params
+      post :create, params: bank_params, format: 'json'
       expect(response).to have_http_status(:unprocessable_entity)
     end
   end
@@ -109,10 +108,9 @@ RSpec.describe BanksController,
     end
 
     it 'has not update bank with invalid bank' do
-      bank = FactoryBot.create(:bank)
       put :update, params: { id: '123456', bank: {
-        name: bank.name,
-        contact_no: bank.contact_no
+        name: @bank.name,
+        contact_no: @bank.contact_no
       } }
       expect(response).to have_http_status(:unprocessable_entity)
     end
@@ -120,9 +118,8 @@ RSpec.describe BanksController,
 
   context 'DELETE#destroy' do
     it 'has destroy bank successfully' do
-      bank = FactoryBot.create(:bank)
-      delete :destroy, params: { id: bank.id }
-      expect(assigns(:bank)).to eq bank
+      delete :destroy, params: { id: @bank.id }
+      expect(assigns(:bank)).to eq @bank
       expect(response).to have_http_status(:ok)
     end
 

@@ -2,12 +2,19 @@
 
 require 'rails_helper'
 
-RSpec.describe TransactionsController,
-               type: :controller do
+RSpec.describe TransactionsController, type: :controller do
+  before :each do
+    @bank = FactoryBot.create(:bank)
+    @atm = FactoryBot.create(:atm, bank_id: @bank.id)
+    @branch = FactoryBot.create(:branch, bank_id: @bank.id)
+    @user = FactoryBot.create(:user, branch_id: @branch.id)
+    @account = FactoryBot.create(:account, user_id: @user.id)
+    @transaction = FactoryBot.create(:transaction, account_id: @account.id, atm_id: @atm.id)
+  end
   context 'GET#index' do
     it 'has show all transactions successfully' do
-      transaction1 = FactoryBot.create(:transaction)
-      transaction2 = FactoryBot.create(:transaction)
+      transaction1 = FactoryBot.create(:transaction, account_id: @account.id, atm_id: @atm.id)
+      transaction2 = FactoryBot.create(:transaction, account_id: @account.id, atm_id: @atm.id)
       get :index
       expect(assigns(:transactions)).to include transaction1
       expect(assigns(:transactions)).to include transaction2
@@ -16,9 +23,8 @@ RSpec.describe TransactionsController,
   end
   context 'GET#show' do
     it 'has get transaction successfully' do
-      transaction = FactoryBot.create(:transaction)
-      get :show, params: { id: transaction.id }
-      expect(assigns(:transaction)).to eq(transaction)
+      get :show, params: { id: @transaction.id }
+      expect(assigns(:transaction)).to eq(@transaction)
       expect(response).to have_http_status(:ok)
     end
 
@@ -39,9 +45,8 @@ RSpec.describe TransactionsController,
   end
   context 'GET#edit' do
     it 'has get correct transaction successfully' do
-      transaction = FactoryBot.create(:transaction)
-      get :edit, params: { id: transaction.id }
-      expect(assigns(:transaction)).to eq(transaction)
+      get :edit, params: { id: @transaction.id }
+      expect(assigns(:transaction)).to eq(@transaction)
       expect(response).to have_http_status(:ok)
     end
 
@@ -53,22 +58,22 @@ RSpec.describe TransactionsController,
 
   context 'POST#create' do
     it 'has create transaction successfully' do
-      transaction = FactoryBot.build(:transaction)
+      @transaction = FactoryBot.build(:transaction, account_id: @account.id, atm_id: @atm.id)
       transaction_params = {
         transaction: {
-          amount: transaction.amount,
-          transaction_type: transaction.transaction_type,
-          atm_id: transaction.atm_id,
-          account_id: transaction.account_id
+          amount: @transaction.amount,
+          transaction_type: @transaction.transaction_type,
+          atm_id: @transaction.atm_id,
+          account_id: @transaction.account_id
         }
       }
       post :create, params: transaction_params
-      expect(assigns(:transaction).amount).to eq transaction.amount
+      expect(assigns(:transaction).amount).to eq @transaction.amount
       expect(
         assigns(:transaction).transaction_type
-      ).to eq transaction.transaction_type
-      expect(assigns(:transaction).atm_id).to eq transaction.atm_id
-      expect(assigns(:transaction).account_id).to eq transaction.account_id
+      ).to eq @transaction.transaction_type
+      expect(assigns(:transaction).atm_id).to eq @transaction.atm_id
+      expect(assigns(:transaction).account_id).to eq @transaction.account_id
       expect(response).to have_http_status(:created)
     end
 
@@ -85,10 +90,8 @@ RSpec.describe TransactionsController,
 
   context 'PUT#update' do
     it 'has update transaction successfully' do
-      @b = FactoryBot.create(:branch, IFSC_code: 'etugght34')
-      @u = FactoryBot.create(:user, branch_id: @b.id)
-      transaction1 = FactoryBot.create(:transaction)
-      transaction2 = FactoryBot.build(:transaction)
+      transaction1 = FactoryBot.create(:transaction, account_id: @account.id, atm_id: @atm.id)
+      transaction2 = FactoryBot.build(:transaction, account_id: @account.id, atm_id: @atm.id)
       put :update,
           params: {
             id: transaction1.id,
@@ -110,9 +113,8 @@ RSpec.describe TransactionsController,
     end
 
     it 'has not update transaction with invalid inputs' do
-      transaction1 = FactoryBot.create(:transaction)
       put :update, params: {
-        id: transaction1.id, transaction: {
+        id: @transaction.id, transaction: {
           amount: nil, transaction_type: nil, atm_id: nil
         }
       }
@@ -120,11 +122,10 @@ RSpec.describe TransactionsController,
     end
 
     it 'has not update transaction with invalid transaction' do
-      transaction = FactoryBot.create(:transaction)
       put :update, params: { id: '123456', transaction: {
-        amount: transaction.amount,
-        transaction_type: transaction.transaction_type,
-        atm_id: transaction.atm_id
+        amount: @transaction.amount,
+        transaction_type: @transaction.transaction_type,
+        atm_id: @transaction.atm_id
       } }
       expect(response).to have_http_status(:unprocessable_entity)
     end
@@ -132,9 +133,8 @@ RSpec.describe TransactionsController,
 
   context 'DELETE#destroy' do
     it 'has destroy transaction successfully' do
-      transaction = FactoryBot.create(:transaction)
-      delete :destroy, params: { id: transaction.id }
-      expect(assigns(:transaction)).to eq transaction
+      delete :destroy, params: { id: @transaction.id }
+      expect(assigns(:transaction)).to eq @transaction
       expect(response).to have_http_status(:ok)
     end
 

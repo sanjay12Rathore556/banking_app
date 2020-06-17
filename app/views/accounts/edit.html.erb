@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=“UTF-8”>
+    <meta lang=“english”>
+    <meta title=“bank”>
+    <title>Banking System</title>
+  </head>
+  <body>
+    <h1>Edit user</h1>
+    <form class="newaccount">
+        <input class="userId" id="UserId" type="text" name="userId" hidden="true">
+        <input class="userId" id="AccountId" type="text" name="userId" hidden="true">
+       <label class="heading">Account no:</label>
+        <input class="data" id="AccountNo"type="text" name="accountno">
+        <label class="heading">Account Type:</label>
+        <input class="data" id="AccountType" type="text" name="accountype">
+        <br>
+        <label class="heading">Balance:</label>
+        <input class="data" id="Balance" type="text" name="Balance">
+        <input class="button submit" type="button" value="Submit">
+      </form> 
+  </body>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      var pageLoaded = new EditAccount.pageLoaded();
+    });
+  </script>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=“UTF-8”>
+    <meta lang=“english”>
+    <meta title=“bank”>
+    <title>Banking System</title>
+  </head>
+  <body>
+    <h1>Edit user</h1>
+    <form class="newuser">
+        <input class="branchId" id="BranchId" type="text" name="branchId" hidden="true">
+        <input class="userId" id="UserId" type="text" name="userId" hidden="true">
+        <label class="heading"> Name:</label>
+        <input class="data" id="UserName"type="text" name="userName">
+        <label class="heading">Father Name:</label>
+        <input class="data" id="FatherName" type="text" name="FatherName">
+        <label class="heading">Mother Name:</label>
+        <input class="data" id="MotherName" type="text" name="MotherName">
+        <br>
+        <label class="heading">Address:</label>
+        <input class="data" id="UserAddress" type="text" name="address">
+        <label class="heading">Age:</label>
+        <input class="data" id="Age" type="text" name="Age">
+        <label class="heading">Contact_no:</label>
+        <input class="data" id="ContactNo" type="text" name="contact_no">
+        <input class="button submit" type="button" value="Submit">
+      </form> 
+  </body>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      var pageLoaded = new EditUser.pageLoaded();
+    });
+  </script>
+</html>

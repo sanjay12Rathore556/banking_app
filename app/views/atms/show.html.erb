@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=“UTF-8”>
+    <meta lang=“english”>
+    <meta title=“banking-system”>
+    <title>Banking System</title>
+  </head>
+  <body>
+    <div id="atm">
+      <label class="atmname header"></label><br />
+      <lable class="atmaddress header"></lable><br />
+    </div>
+    
+    <div id="transactions">
+    
+      <h1>Transactions</h1>
+      <table class="list">
+        <tr>
+          <th>Transaction Type</th>
+          <th>Amount</th>
+          <th>AccountNo</th>
+          <th colspan="3"></th>
+        </tr>
+      </table>
+    </div>
+    
+    <hr>
+    
+  </body>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      var pageLoaded = new ShowAtm.pageLoaded();
+    });
+  </script>
+</html>

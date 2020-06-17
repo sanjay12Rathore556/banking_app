@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=“UTF-8”>
+    <meta lang=“english”>
+    <meta title=“Banking-system”>
+    <title>Banking System</title>
+  </head>
+  <body class="usershow">
+    <div id="user">
+      <label class="name header"></label><br />
+      <lable class="contact_no header"></lable><br />
+    </div>
+    <div id="accounts">
+     
+      <h1>Accounts</h1>
+      <table class="list">
+        <tr>
+          <th>Account No</th>
+          <th>Account_Type</th>
+          <th>Balance</th>
+          <th colspan="3"></th>
+        </tr>
+      </table>
+    </div>
+    <button class="button new" id="newaccount">Add New account</button>
+    <br><br><br>
+    <div id="addaccount">
+     
+      <form class="newaccount">
+        <input class="userId" type="text" name="userId" hidden="true">
+        <label class="heading">Account no:</label>
+        <input class="data" id="AccountNo"type="text" name="accountno">
+        <label class="heading">Account Type:</label>
+        <select class="data" id="AccountType" type="text" name="accountype">
+          <option>current</option>
+          <option>saving</option>
+        </select>
+        <br>
+        <label class="heading">Balance:</label>
+        <input class="data" id="Balance" type="text" name="Balance">
+        <input class="button submit" type="button" value="Submit">
+      </form>
+      <br><br> 
+    </div> 
+    <hr>
+    
+    <div id="loans">
+      
+      <h1>Loans</h1>
+      <table class="list">
+        <tr>
+          <th>Loan Type</th>
+          <th>Amount</th>
+          <th>Interest</th>
+          <th>Time period</th>
+          <th colspan="3"></th>
+        </tr>
+      </table>
+    </div>
+    <button class="button new" id="newloan">Add New Loan</button>  
+    <br><br><br>
+    <div id="addloan">
+      
+      <form class="newloan">
+        <input class="userId" type="text" name="branchId" hidden="true">
+        <label class="heading">Loan Type:</label>
+        <select class="data" id="LoanType" type="text" name="Loantype">
+         <option>Education_Loan</option>
+         <option>Home_Loan</option>
+         <option>Personal_Loan</option>    
+         <option>Business_Loan</option> 
+         <option>Car_Loan</option>
+        </select>
+        <label class="heading">Amount:</label>
+        <input class="data" type="text" id="Amount"name="Amount">
+        <br>
+        <label class="heading">Interest:</label>
+        <input class="data" type="text" id="Interest"name="Interest">
+        <label class="heading">Time Period:</label>
+        <input class="data" type="text" id="TimePeriod"name="TimePeriod">
+        <input class="button submit" type="button" value="Submit">
+      </form> 
+      <br><br>
+    </div> 
+  </body>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      var pageLoaded = new ShowUser.pageLoaded();
+    });
+  </script>
+</html>

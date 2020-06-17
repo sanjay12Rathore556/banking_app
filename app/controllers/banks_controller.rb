@@ -6,7 +6,10 @@ class BanksController < ApplicationController
 
   def new
     @bank = Bank.new
-    render json: { bank: @bank }, status: :ok
+    respond_to do |format|
+      format.html {}
+      format.json { render json: { bank: @bank }, status: :ok }
+    end
   end
 
   def create
@@ -20,7 +23,10 @@ class BanksController < ApplicationController
 
   def show
     @bank = Bank.find(params[:id])
-    render json: { bank: @bank }, status: :ok
+    respond_to do |format|
+      format.html {}
+      format.json { render json: { bank: @bank }, status: :ok }
+    end
   rescue ActiveRecord::RecordNotFound => e
     render json: { errors: e.message }, status: :not_found
   end
@@ -35,12 +41,18 @@ class BanksController < ApplicationController
 
   def index
     @banks = Bank.all
-    render json: { banks: @banks }, status: :ok
+    respond_to do |format|
+      format.html {}
+      format.json { render json: { banks: @banks }, status: :ok }
+    end
   end
 
   def edit
     @bank = Bank.find(params[:id])
-    render json: { bank: @bank }, status: :ok
+    respond_to do |format|
+      format.html {}
+      format.json { render json: { bank: @bank }, status: :ok }
+    end
   rescue ActiveRecord::RecordNotFound => e
     render json: { error: e.message }, status: :not_found
   end
@@ -48,7 +60,9 @@ class BanksController < ApplicationController
   def update
     @bank = Bank.find(params[:id])
     if @bank.update(bank_params)
+
       render json: { bank: @bank }, status: :ok
+
     else
       render json: @bank.errors, status: :unprocessable_entity
     end

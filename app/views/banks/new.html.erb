@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=“UTF-8”>
+    <meta lang=“english”>
+    <meta title=“Bank”>
+    <title>Banking-System</title>
+  </head>
+  <body>
+    <h1>Add New Bank </h1>
+		<form id="NewBank">
+		  <label class="heading">Bank name:</label>
+		  <input class="data" id="BankName" type="text" name="BankName">
+		  <br>
+		  <label class="heading">Contact No:</label>
+		  <input class="data" id="ContactNo" type="text" name="contact_no">
+		  <br><br>
+		  <input id="Submit" class="button submit" type="button" value="Submit">
+		</form> 
+  </body>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      var pageLoaded = new AddBank.pageLoaded();
+    });
+  </script>
+</html>

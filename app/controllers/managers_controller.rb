@@ -6,7 +6,10 @@ class ManagersController < ApplicationController
 
   def new
     @manager = Manager.new
-    render json: { manager: @manager }, status: :ok
+    respond_to do |format|
+      format.html {}
+      format.json { render json: { manager: @manager }, status: :ok }
+    end
   end
 
   def create
@@ -20,7 +23,10 @@ class ManagersController < ApplicationController
 
   def show
     @manager = Manager.find(params[:id])
-    render json: { manager: @manager }, status: :ok
+    respond_to do |format|
+      format.html {}
+      format.json { render json: { manager: @manager }, status: :ok }
+    end
   rescue ActiveRecord::RecordNotFound => e
     render json: { errors: e.message }, status: :not_found
   end
@@ -40,7 +46,10 @@ class ManagersController < ApplicationController
 
   def edit
     @manager = Manager.find(params[:id])
-    render json: { manager: @manager }, status: :ok
+    respond_to do |format|
+      format.html {}
+      format.json { render json: { manager: @manager }, status: :ok }
+    end
   rescue ActiveRecord::RecordNotFound => e
     render json: { error: e.message }, status: :not_found
   end

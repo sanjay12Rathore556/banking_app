@@ -8,7 +8,6 @@ class User < ApplicationRecord
   validates :name,
             :father_name,
             :mother_name,
-            :age,
             :address,
             :contact_no,
             presence: true

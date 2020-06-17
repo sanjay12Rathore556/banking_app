@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=“UTF-8”>
+    <meta lang=“english”>
+    <meta title=“Banking-system”>
+    <title>Banking System</title>
+  </head>
+  <body class="bankshow">
+    <div id="bank">
+      <label class="name header"></label><br />
+      <lable class="contact_no header"></lable><br />
+    </div>
+    <div id="branches">
+     
+      <h1>Branches</h1>
+      <table class="list">
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>IFSC_code</th>
+          <th>contact_no</th>
+          <th colspan="3"></th>
+        </tr>
+      </table>
+    </div>
+    <br>
+    <button class="button new newbranch" id="branchnew">Add New branch</button>
+    <br><br><br>
+    <div id="addbranch">
+      
+      <form class="newbranch">
+        <input class="bankId" type="text" name="bankId" hidden="true">
+        <label class="heading">branch name:</label>
+        <input class="data" id="BranchName"type="text" name="branchkName">
+        <label class="heading">Address:</label>
+        <input class="data" id="BranchAddress" type="text" name="address">
+        <br>
+        <label class="heading">IFSC_code:</label>
+        <input class="data" id="IFSC_code" type="text" name="IFSC_code">
+        <label class="heading">Contact_no:</label>
+        <input class="data" id="ContactNo" type="text" name="contact_no">
+        <input class="button submit" type="button" value="Submit">
+      </form> 
+      <br><br>
+    </div> 
+    
+    <hr>
+    <div id="atms">
+      	
+      <h1>Atms</h1>
+      <table class="list">
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th colspan="3"></th>
+        </tr>
+      </table>
+    </div>
+    <button class="button new newatm" id="atmnew">Add New atm</button>
+    <br><br><br>
+    <div id="addatm">
+      <form class="newatm">
+        <input class="bankId" type="text" name="bankId" hidden="true">
+        <label class="heading">Atm name:</label>
+        <input class="data" id="AtmName" type="text" name="atmName">
+        <label class="heading">Address:</label>
+        <input class="data" type="text" id="AtmAddress"name="address">
+        <input class="button submit" type="button" value="Submit">
+      </form> 
+      <br><br>
+    </div> 
+  </body>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      var pageLoaded = new ShowBank.pageLoaded();
+    });
+  </script>
+</html>
